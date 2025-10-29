@@ -2,22 +2,26 @@
 # Target Python version: 3.11.14
 
 # Data handling and manipulation
-pandas>=2.0.0
-numpy>=1.26.0
+pandas>=2.1.4
+numpy>=1.26.4
 
 # PyCaret for AutoML
 pycaret==3.3.2 # Confirmed version used
 
 # Model interpretability
-shap>=0.44.0
+shap>=0.44.1
 
 # Plotting and visualization
-matplotlib>=3.8.0
-seaborn>=0.13.0
+matplotlib>=3.7.5
+seaborn>=0.13.2
 
 # Jupyter specific display utilities
-ipython>=8.20.0
+ipython>=9.6.0
 
+ipykernel>=7.0.1
+keras>=3.11.3 
+autokeras>=2.0.0 
+tensorflow>=2.16.1
 # Note: scikit-learn and lightgbm are core dependencies of PyCaret 3.3.2
 # and will be installed automatically with PyCaret in a Python 3.11 environment.
 # No need to list them separately unless a very specific version is required
