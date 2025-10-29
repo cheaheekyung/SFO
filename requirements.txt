@@ -1,0 +1,24 @@
+# Project Dependencies for SFO Plastic Injection Molding Demand Prediction
+# Target Python version: 3.11.14
+
+# Data handling and manipulation
+pandas>=2.0.0
+numpy>=1.26.0
+
+# PyCaret for AutoML
+pycaret==3.3.2 # Confirmed version used
+
+# Model interpretability
+shap>=0.44.0
+
+# Plotting and visualization
+matplotlib>=3.8.0
+seaborn>=0.13.0
+
+# Jupyter specific display utilities
+ipython>=8.20.0
+
+# Note: scikit-learn and lightgbm are core dependencies of PyCaret 3.3.2
+# and will be installed automatically with PyCaret in a Python 3.11 environment.
+# No need to list them separately unless a very specific version is required
+# outside of PyCaret's dependency management.
