@@ -10,7 +10,7 @@
 
 # 사용자 지정 
 data/
-
+autodl_logs/
 
 
 # IPython
@@ -147,6 +147,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+
 
 # Spyder project settings
 .spyderproject
