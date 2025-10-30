@@ -19,9 +19,9 @@ seaborn>=0.13.2
 ipython>=9.6.0
 
 ipykernel>=7.0.1
-keras>=3.11.3 
-autokeras>=2.0.0 
-tensorflow>=2.16.1
+keras==3.11.3 
+autokeras==2.0.0 
+tensorflow==2.16.1
 # Note: scikit-learn and lightgbm are core dependencies of PyCaret 3.3.2
 # and will be installed automatically with PyCaret in a Python 3.11 environment.
 # No need to list them separately unless a very specific version is required
