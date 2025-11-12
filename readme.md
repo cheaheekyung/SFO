@@ -4,31 +4,37 @@
 이 프로젝트는 플라스틱 사출성형 제품의 수요를 예측하는 모델을 개발하는 것을 목표로 합니다. Jupyter Notebook 중심의 워크플로우를 통해 데이터 탐색, 피처 엔지니어링, 모델 튜닝 및 평가, 그리고 SHAP 분석을 수행합니다.
 
 ## Project Structure
-이 섹션에서는 Jupyter 중심 워크플로우에 따라 SFO 프로젝트의 권장 파일 구조를 설명합니다.
+ Jupyter 중심 워크플로우에 따른 SFO 프로젝트의 권장 파일 구조입니다.
 
 ```
 SFO/
-├── .git/
-├── README.md
-├── requirements.txt
-├── data/
-│   └── SFO_data_raw.csv
-├── config.py                 # (동일) 모든 설정값
-├── src/                      # 재사용 가능한 핵심 로직 (Python 모듈)
-│   ├── __init__.py           # 이 폴더를 Python 패키지로 인식하게 함
-│   ├── data_processor.py     # 데이터 로드, 전처리, 피처 엔지니어링 관련 클래스/함수
-│   ├── model_trainer.py      # 모델 정의, 튜닝, 학습, 평가 관련 클래스/함수
-│   ├── analyzer.py           # SHAP 분석 및 시각화 관련 클래스/함수
-│   └── utils.py              # 공통 유틸리티 함수 (폰트 설정 등)
-├── notebooks/                # Jupyter Notebook 기반의 테스트, 실험, 최종 실행 파일
-│   ├── EDA/ #탐색적 데이터 분석 노트북
-│   │   ├── 00_EDA_humidity.ipynb          # 탐색적 데이터 분석
-│   ├── Model/
-|   │   ├── 00_Model_Experiments.ipynb # 다양한 모델 및 하이퍼파라미터 실험
-│   ├── Plot/ #시각화 관련
-|   |   ├── image/  #시각화 이미지 저장 경로
-|   |   ├──00_plot.ipynb # 시각화 관련
-│   └── README.md             # 각 노트북 파일의 목적 설명
+├─ .venv/
+├─ data/
+├─ image/
+├─ notebooks/
+│  ├─ EDA/
+│  │  ├─ 00_baseline_processed.ipynb
+│  │  ├─ 01_time_series.ipynb
+│  │  └─ 03_dtw_clustering.ipynb
+│  ├─ Model/
+│  │  ├─ autodl_logs/
+│  │  ├─ 00_baseline_model.ipynb
+│  │  ├─ 01_dtw_model.ipynb
+│  │  └─ autoKeras.ipynb
+│  └─ Plot/
+│     ├─ 00_baseline_plot_XAI.ipynb
+│     └─ 00_plot.ipynb
+├─ src/
+│   ├─ 00_baseline_processed.ipynb          # 원천 데이터 읽기, 클린업/정규화/기초 EDA, 베이스라인 입력 데이터 저장
+│   ├─ 01_baseline_model.ipynb              # 간단한 모델(BL) 구축, 기본 성능 확보
+│   ├─ 02_time_series(feature_engineering).ipynb  # 시계열 파생변수/캘린더/롤링 통계 등
+│   ├─ 03_hyperparams(optuna).ipynb         # Optuna 기반 LightGBM 하이퍼파라미터 튜닝
+│   └─ 04_final_model.ipynb                 # 최종 학습/검증, SHAP 해석, 결과 산출
+├─ .gitignore
+├─ config.py
+├─ readme.md
+└─ requirements.txt
+
 ```
 
 ## Getting Started (환경 설정)
@@ -56,3 +62,40 @@ SFO/
     ```bash
     pip install -r requirements.txt
     ```
+
+## Run Order (실행 순서)
+
+아래 순서대로 **`src/` 폴더**의 노트북을 실행하세요.
+
+1. **`00_baseline_processed.ipynb`**  
+   - 데이터 로딩 → 결측/이상치 처리 → dtype 캐스팅 → 기초 EDA  
+   - **산출:** 전처리 테이블(예: `baseline_processed.csv`)
+
+2. **`01_baseline_model.ipynb`**  
+   - 시간 기반 분할(train/val) → BL 모델(LGBM 기본값 등) 학습 → MAE/RMSE/R² 산출
+
+3. **`02_time_series(feature_engineering).ipynb`**  
+   - lag/rolling/캘린더/외생변수 등 피처 추가 → 성능 향상 검증
+
+4. **`03_hyperparams(optuna).ipynb`**  
+   - Optuna로 LightGBM 튜닝 → Best params / Study 저장(선택)
+
+5. **`04_final_model.ipynb`**  
+   - 최적 파라미터 적용 최종 학습 → 지표 산출 → SHAP( bar / summary / dependence / force )  
+   - **산출:** `final_model.pkl`, `predictions.csv`, `figures/*.png`(선택)
+
+
+
+## Notes
+
+민감 데이터는 리포지토리에 포함하지 않습니다.
+
+
+경로/키 등은 config.py 또는 환경변수로 관리하세요.
+
+
+
+raw_data(사출성형.csv)는 아래 사이트에서 다운받을 수 있습니다. 
+
+
+[사출성형 데이터셋 (KAMP AI 포털)](https://www.kamp-ai.kr/aidataDetail?AI_SEARCH=%EC%82%AC%EC%B6%9C%EC%84%B1%ED%98%95&page=1&DATASET_SEQ=40&DISPLAY_MODE_SEL=CARD&EQUIP_SEL=&GUBUN_SEL=&FILE_TYPE_SEL=&WDATE_SEL=)
